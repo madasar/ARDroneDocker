@@ -2,7 +2,7 @@
 
 This is a Docker container for Ubuntu 12.04 Precise that compiles the example code from the Parrot SDK for the AR series of drones.
 
-The SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here:](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
+The SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
 
 ##Commands
 
@@ -34,7 +34,13 @@ To run the image so graphical applications are shown in the host:
 
 `docker run -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -it ardrone2sdk bash --login -i`
 
-([via:](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/) you may need to `xhost +` on the Linux host [via:](http://stackoverflow.com/questions/28392949/running-chromium-inside-docker-gtk-cannot-open-display-0))
+([via](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/) you may need to `xhost +` on the Linux host [via](http://stackoverflow.com/questions/28392949/running-chromium-inside-docker-gtk-cannot-open-display-0))
+
+To give the Docker container direct access to local networking, including the host's  wifi connection:
+
+`docker run --net=host -it ardrone2sdk bash --login -i`
+
+(N.B. There is a security risk with this approach. [via](https://github.com/fgg89/docker-ap/wiki/Container-access-to-wireless-network-interface) )
 
 ##General Docker Commands:
 
