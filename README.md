@@ -3,8 +3,9 @@
 Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04. This docker container compiles the Linux SDK example code as newer Ubuntu releases no longer have issues. 
 
 There are two versions:
--12.04 LTS Precise Pangolin 64-bit (FROM ubuntu:precise - EOL April 2017)
--14.04 LTS Trusty Tahr 64-bit (FROM ubuntu:trusty - EOL April 2019)
+
+* 12.04 LTS Precise Pangolin 64-bit (FROM ubuntu:precise - EOL April 2017)
+* 14.04 LTS Trusty Tahr 64-bit (FROM ubuntu:trusty - EOL April 2019)
 
 Both are tested with Docker version 1.26 on Ubuntu 16.04. The `trusty` version patches the SDK [via](http://stackoverflow.com/questions/35052653/compiling-ar-drone-sdk-fails-with-dso-missing-from-command-line) and [via](http://jderobot.org/Varribas-tfm/ARDrone:starting_up#Building_Examples) before compiling, using slightly different set of packages, and takes longer to build due to a debconf issue.
 
