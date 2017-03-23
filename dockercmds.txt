@@ -3,6 +3,8 @@ docker rm $(docker ps -a -q)
 docker rmi $(docker images -a -q)
 docker volume rm $(docker volume ls -qf dangling=true)
 docker volume rm $(docker volume ls -q)
-docker exec -i -t $(docker ps -q) sh
 docker build . -t ardrone2sdk
-docker run -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -it ardrone2sdk bash --login -i
+docker run --net=host -v `pwd`/files:/files -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -it ardrone2sdk bash --login -i
+
+
+
