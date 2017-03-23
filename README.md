@@ -1,6 +1,6 @@
 ## Synopsis
 
-This is a Docker container based on Ubuntu 12.04 Precise (FROM ubuntu:precise) that compiles the Parrot SDK v2. The original SDK was released in 2009 for the AR series of drones. This docker containter was created because as the SDK code no longer compiles in later linuxes.
+This is a Docker container based on Ubuntu 14.04 Trusty Tahr (FROM ubuntu:trusty) that compiles the Parrot SDK v2. The original SDK was released in 2009 for the AR series of drones. This docker container was created because the SDK no longer compiles on newer linuxes.
 
 The SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
 
