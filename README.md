@@ -1,14 +1,26 @@
 ## Synopsis
 
-This is a Docker container based on Ubuntu 14.04 Trusty Tahr (FROM ubuntu:trusty) that compiles the Parrot SDK v2. The original SDK was released in 2009 for the AR series of drones. This docker container was created because the SDK no longer compiles on newer linuxes.
+Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04. This docker container compiles the Linux SDK example code as newer Ubuntu releases no longer have issues. 
 
-The SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
+There are two versions:
+-12.04 LTS Precise Pangolin 64-bit (FROM ubuntu:precise - EOL April 2017)
+-14.04 LTS Trusty Tahr 64-bit (FROM ubuntu:trusty - EOL April 2019)
 
-## Docker Build and Run Command
+Both are tested with Docker version 1.26 on Ubuntu 16.04. The `trusty` version patches the SDK [via](http://stackoverflow.com/questions/35052653/compiling-ar-drone-sdk-fails-with-dso-missing-from-command-line) and [via](http://jderobot.org/Varribas-tfm/ARDrone:starting_up#Building_Examples) before compiling, using slightly different set of packages, and takes longer to build due to a debconf issue.
 
-First clone this repo:
+The v2 SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
 
-`git clone https://github.com/seyyedshah/ARDroneDocker.git`
+The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile the sdk.
+
+## Usage 
+
+First clone the repo:
+
+`git clone https://github.com/seyyedshah/ARDroneDocker.git -b precise` (for the ubuntu 12.04 version)
+
+or
+
+`git clone https://github.com/seyyedshah/ARDroneDocker.git -b trusty` (for the ubuntu 14.04 version)
 
 `cd ARDroneDocker`
 
@@ -16,19 +28,23 @@ Build the image:
 
 `docker build . -t ardrone2sdk`
 
-To run the image with a shell:
+To run the image:
 
 `docker run -it ardrone2sdk bash --login -i`
 
-The built SDK example code can be found in the `/root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Releases` folder.
+To run the image with all the options (explained below):
 
-`cd /root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Releases`
+``docker run --net=host -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`/files:/files -it ardrone2sdk bash --login -i``
+
+The built SDK example code can be found the following folder:
+
+`cd /root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Release`
 
 `./linux_sdk_demo`
 
 You can the start writing your code and building as per the SDK instructions and examples. Remember to transfer any code out of the container before exiting. Changes are not persistent by default.
 
-## More Advanced Docker Options
+## Docker Options
 
 To run the image with the local `files` folder syncronised with `/files` on the container add ``-v `pwd`/files:/root/files``. Any files put in the `/files` on the container will be saved on file system of host machine.
 
