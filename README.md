@@ -1,8 +1,8 @@
 ## Synopsis
 
-Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04 i386. This docker container was created to simplify and automate the complitation on modern systems.
+Ubuntu-based docker containers to compile the SDK for the Parrot AR Drone. This docker container was created to simplify and automate the complitation on modern systems. The Drone was released in ~2010 and the last update to the v2 SDK was in ~2013, the SDK targets Ubuntu 12.04 i386. Parrot has released the v3 SDK for newer drones, but it does not support the AR 1.0 or 2.0 drones.
 
-## Details
+## Version
 
 There are two versions:
 
@@ -13,7 +13,7 @@ Both are tested with Docker version 1.26 on Ubuntu 16.04. The `trusty` version p
 
 The v2 SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
 
-The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile the sdk. The docker images take up around 900MB, and download ~150MB including this repository and automates most of the process. An Ubuntu VM image would take at least 10GB and require downloading at least a 1GB VM image and manaully compling the SDK.
+The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile. The docker images take up around 900MB, downloads ~150MB and automates most of the process. An Ubuntu VM image would require  a 10GB virtual disk and require downloading at least a 1GB VM image, the SDK and build tools and then manually compling the SDK.
 
 ## Usage 
 
@@ -39,7 +39,7 @@ To run the image with all the options (explained below):
 
 ``docker run --net=host -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`/files:/files -it ardrone2sdk bash --login -i``
 
-The ready-built SDK example code can be found the following folder:
+The already built SDK example code can be found the following folder:
 
 `cd /root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Release`
 
