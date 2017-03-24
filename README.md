@@ -27,9 +27,11 @@ or
 
 `git clone https://github.com/seyyedshah/ARDroneDocker.git -b trusty ARDroneDocker-trusty` (for the ubuntu 14.04 version)
 
-`cd` to cloned folder and build the image:
+in the cloned folder, build the image and the SDK:
 
-`docker build . -t ardrone2sdk` (this takes a couple of minutes)
+`docker build . -t ardrone2sdk` 
+
+(wait ~5 minutes, see ulimits below if it takes longer)
 
 To run the image:
 
@@ -39,27 +41,45 @@ To run the image with all the options (explained below):
 
 ``docker run --net=host -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`/files:/files -it ardrone2sdk bash --login -i``
 
-The already built SDK example code can be found the following folder:
+To run the SDK example code, the built SDK example code can be found the following folder:
 
 `cd /root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Release`
 
 `./linux_sdk_demo`
 
+`./ardrone_navigation`
+
+`./linux_video_demo`
+
+`./sym_ardrone_testing_tool`
+
 You can the start writing your code and building as per the SDK instructions and examples. Remember to transfer any code out of the container before exiting. Changes are not persistent by default.
 
 ## Docker Options
+
+### ulimits
+
+To build the image with the `--ulimit` option set to speed up build in trusty:
+
+`docker build  --ulimit nofile=12800:25600 . -t ardrone2sdk:trusty`
+
+### Save data from the container
 
 To run the image with the local `files` folder syncronised with `/files` on the container add ``-v `pwd`/files:/root/files``. Any files put in the `/files` on the container will be saved on file system of host machine.
 
 ``docker run -v `pwd`/files:/files -it ardrone2sdk bash --login -i``
 
-To run the image so graphical applications can shown in the host:
+### Graphical applications on the container
+
+Several of the SDK demos create a video preview, you may have an error `cannot open display :0`. To run the image so graphical applications can be shown in the host:
 
 `docker run -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -it ardrone2sdk bash --login -i`
 
 [via](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/) you may need to `xhost +` on a Linux host [see](http://stackoverflow.com/questions/28392949/running-chromium-inside-docker-gtk-cannot-open-display-0). On a mac, you will need to install xQuartz, [see](https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/). 
 
-To give the Docker container direct access to local networking, including the host's wifi connection:
+### Networking
+
+The SDK commuicates with the drone over wifi. To give the Docker container direct access to local networking, including the host's wifi connection:
 
 `docker run --net=host -it ardrone2sdk bash --login -i`
 
