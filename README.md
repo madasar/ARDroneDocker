@@ -13,7 +13,7 @@ Both are tested with Docker version 1.26 on Ubuntu 16.04. The `trusty` version p
 
 The v2 SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
 
-The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile. The docker images take up around 900MB, downloads ~150MB and automates most of the process. An Ubuntu VM image would require  a 10GB virtual disk and require downloading at least a 1GB VM image, the SDK and build tools and then manually compling the SDK.
+The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile. The docker images take up around 900MB, downloads ~150MB and automates most of the process, which takes around 5-10 minutes. An Ubuntu VM image would require a 10GB virtual disk, download of 1GB install media, setup of the machine, build tools and compling the SDK.
 
 ## Usage 
 
