@@ -1,33 +1,35 @@
 ## Synopsis
 
-Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04.  This docker container compiles the Linux SDK example code as newer Ubuntu releases have updated libraries that the example code depends upon.
+Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04 i386. This docker container was created to simplify and automate the complitation on modern systems.
+
+## Details
 
 There are two versions:
 
-* 12.04 LTS Precise Pangolin 64-bit (FROM ubuntu:precise - EOL April 2017)
-* 14.04 LTS Trusty Tahr 64-bit (FROM ubuntu:trusty - EOL April 2019)
+* 12.04 LTS Precise Pangolin amd64 (FROM ubuntu:precise - EOL April 2017)
+* 14.04 LTS Trusty Tahr amd64 (FROM ubuntu:trusty - EOL April 2019)
 
-Both are tested with Docker version 1.26 on Ubuntu 16.04. The `trusty` version patches the SDK [via](http://stackoverflow.com/questions/35052653/compiling-ar-drone-sdk-fails-with-dso-missing-from-command-line) and [via](http://jderobot.org/Varribas-tfm/ARDrone:starting_up#Building_Examples) before compiling, using slightly different set of packages, and takes longer to build due to a debconf issue.
+Both are tested with Docker version 1.26 on Ubuntu 16.04. The `trusty` version patches the SDK before compiling ([via](http://stackoverflow.com/questions/35052653/compiling-ar-drone-sdk-fails-with-dso-missing-from-command-line) and [via](http://jderobot.org/Varribas-tfm/ARDrone:starting_up#Building_Examples)), uses a slightly different set of packages, and takes longer to build due to a debconf issue. N.B. not tested on OSX/windows, requires access to the drone via wifi.
 
 The v2 SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
 
-The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile the sdk.
+The alternative to using docker is to setup a Precise or Trusty virtual machine and use the Docker files as a guide to compile the sdk. The docker images take up around 900MB, and download ~150MB including this repository and automates most of the process. An Ubuntu VM image would take at least 10GB and require downloading at least a 1GB VM image and manaully compling the SDK.
 
 ## Usage 
 
-First clone the repo:
+[Get docker](https://www.docker.com/community-edition#/download).
 
-`git clone https://github.com/seyyedshah/ARDroneDocker.git -b precise` (for the ubuntu 12.04 version)
+Clone the repo:
+
+`git clone https://github.com/seyyedshah/ARDroneDocker.git -b precise ARDroneDocker-precise` (for the ubuntu 12.04 version)
 
 or
 
-`git clone https://github.com/seyyedshah/ARDroneDocker.git -b trusty` (for the ubuntu 14.04 version)
+`git clone https://github.com/seyyedshah/ARDroneDocker.git -b trusty ARDroneDocker-trusty` (for the ubuntu 14.04 version)
 
-`cd ARDroneDocker`
+`cd` to cloned folder and build the image:
 
-Build the image:
-
-`docker build . -t ardrone2sdk`
+`docker build . -t ardrone2sdk` (this takes a couple of minutes)
 
 To run the image:
 
@@ -37,7 +39,7 @@ To run the image with all the options (explained below):
 
 ``docker run --net=host -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -v `pwd`/files:/files -it ardrone2sdk bash --login -i``
 
-The built SDK example code can be found the following folder:
+The ready-built SDK example code can be found the following folder:
 
 `cd /root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Release`
 
@@ -55,7 +57,7 @@ To run the image so graphical applications can shown in the host:
 
 `docker run -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -it ardrone2sdk bash --login -i`
 
-[via](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/) you may need to `xhost +` on a Linux host [see](http://stackoverflow.com/questions/28392949/running-chromium-inside-docker-gtk-cannot-open-display-0) and install xQuartz on a mac [see](https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/). Not tested on OSX/windows.
+[via](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/) you may need to `xhost +` on a Linux host [see](http://stackoverflow.com/questions/28392949/running-chromium-inside-docker-gtk-cannot-open-display-0). On a mac, you will need to install xQuartz, [see](https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/). 
 
 To give the Docker container direct access to local networking, including the host's wifi connection:
 
@@ -85,11 +87,14 @@ Remove any dangling volumes:
 
 `docker volume rm $(docker volume ls -qf dangling=true)`
 
-In rare cases, the Docker container may lose internet connectivity, (no `docker0` in the output `ip route` on the host). To remove and re add the `docker0` bridge on linux:
+In rare cases, the Docker container may lose internet connectivity, (no `docker0` in the output of `ip route` on the host). To remove and re add the `docker0` bridge on linux:
 
 `service docker stop`
+
 `ip link del docker0`
+
 `nmcli connection delete docker0 #if you use network manager` 
+
 `service docker start`
  
 
