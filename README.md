@@ -1,6 +1,6 @@
 ## Synopsis
 
-Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04. This docker container compiles the Linux SDK example code as newer Ubuntu releases no longer have issues. 
+Ubuntu-based docker containers to compile the Parrot v2 SDK. The original Drone was released in ~2010 for the AR 1.0 and 2.0 drones and the last update (~2012?) targets Ubuntu 12.04.  This docker container compiles the Linux SDK example code as newer Ubuntu releases have updated libraries that the example code depends upon.
 
 There are two versions:
 
