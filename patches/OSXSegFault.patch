@@ -1,0 +1,59 @@
+diff -Naur /root/ARDrone_SDK_2_0_1-orig/ARDroneLib/Soft/Lib/ardrone_tool/Com/config_wifi.c /root/ARDrone_SDK_2_0_1/ARDroneLib/Soft/Lib/ardrone_tool/Com/config_wifi.c
+--- /root/ARDrone_SDK_2_0_1-orig/ARDroneLib/Soft/Lib/ardrone_tool/Com/config_wifi.c	2011-11-25 16:06:50.000000000 +0000
++++ /root/ARDrone_SDK_2_0_1/ARDroneLib/Soft/Lib/ardrone_tool/Com/config_wifi.c	2017-03-26 21:05:43.000000000 +0000
+@@ -281,19 +281,34 @@
+ 	struct in_addr tmpAddr;
+ 	bool_t found = FALSE;
+ 
++	int success = -1;
++
+ 	if(strlen(config.itfName) == 0)
+ 	{
+-		getifaddrs(&ifAddrStruct);
++		success = getifaddrs(&ifAddrStruct);
+ 		ifAddrStructHead = ifAddrStruct;
+ 
+-		while (!found && (ifAddrStruct != NULL))
++		struct ifaddrs *interface;
++
++                for(interface=ifAddrStruct; interface && success==0 && !found ; interface=interface->ifa_next)
+ 		{
+-			// Looking for WIFI interface's IP address corresponding to WIFI_BASE_ADDR
+-			if (ifAddrStruct->ifa_addr->sa_family == AF_INET)
++                	if(!(interface->ifa_flags & IFF_UP)  || (interface->ifa_flags & IFF_LOOPBACK)  )
+ 			{
+-				tmpAddr = ((struct sockaddr_in *)ifAddrStruct->ifa_addr)->sin_addr;
++				printf("interface skipped %s\n", interface->ifa_name);
++                   		continue;
++                	}
++           		const struct sockaddr_in *addr = (const struct sockaddr_in*)interface->ifa_addr;
++
++            		if(addr && (addr->sin_family==AF_INET))
++			{
++				printf("interface connected: %s\n", interface->ifa_name);
++
++				tmpAddr = ((struct sockaddr_in *)interface->ifa_addr)->sin_addr;
++
+ 				if ( (ntohl(tmpAddr.s_addr) & 0xFFFFFF00) == WIFI_BASE_ADDR )
+ 				{
++					printf("matching network: %s\n", interface->ifa_name);
++
+ 					inet_ntop(AF_INET, &tmpAddr, config.localHost, VP_COM_NAME_MAXSIZE);
+ 					memcpy(config.itfName, ifAddrStruct->ifa_name, strlen(ifAddrStruct->ifa_name));
+ 					if(VP_FAILED(wifi_server_auth(&tmpAddr)))
+@@ -306,12 +321,13 @@
+ 					found = TRUE;
+ 				}
+ 			}
+-			ifAddrStruct = ifAddrStruct->ifa_next;
++
++
+ 		}
+ 
+ 		if (ifAddrStructHead != NULL)
+ 		{
+-		  freeifaddrs(ifAddrStructHead);
++			  freeifaddrs(ifAddrStructHead);
+ 		}
+ 	}
+ 
