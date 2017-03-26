@@ -1,36 +1,38 @@
 ## Synopsis
 
-Ubuntu-based docker container to compile the Parrot AR Drone SDK, created to simplify and automate the compilation. The last update to the v2 SDK was in ~2013, targeting Ubuntu 12.04 i386. Parrot has released the v3 SDK for newer drones, without support the AR 1.0 or 2.0 drones.
+Ubuntu-based docker container for the Parrot AR Drone SDK, for simple and automate compilation. The last update to the v2 SDK was in ~2013, targeting Ubuntu 12.04 i386. Parrot has released the v3 SDK for newer drones, without support the AR 1.0 or 2.0.
 
 ## Ubuntu Version
 
-The container is tested with Docker version 1.26 on Ubuntu 16.04. The container patches the SDK before compiling ([via](http://stackoverflow.com/questions/35052653/compiling-ar-drone-sdk-fails-with-dso-missing-from-command-line) and [via](http://jderobot.org/Varribas-tfm/ARDrone:starting_up#Building_Examples)). The container works with `ubuntu:precise`, `ubuntu:trusty` and `ubuntu:xenial` (default).
+The container is tested with Docker version 1.26 on Ubuntu 16.04. There are patches to the SDK ([via](http://stackoverflow.com/questions/35052653/compiling-ar-drone-sdk-fails-with-dso-missing-from-command-line) and [via](http://jderobot.org/Varribas-tfm/ARDrone:starting_up#Building_Examples)). The container works with `ubuntu:precise`, `ubuntu:trusty` and `ubuntu:xenial` (default).
 
-The SDK is included as a blob in this repo (~65MB) and can also be freely downloaded [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip). The SDK code is included here for convenience and retains the original licence(s).
+The SDK blob is in this repo (~65MB) [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip), for convenience and retains the original licence(s).
 
-The docker images download ~150MB, take 1GB of space, and automate most the 5 minute build process.
+The container downloads up to ~150MB, takes up 1GB of disk space, and automate the 5 minute build process.
 
 ## Usage 
 
 [Get docker](https://www.docker.com/community-edition#/download).
 
-Clone the repo:
+Clone this repo:
 
 `git clone https://github.com/seyyedshah/ARDroneDocker.git`
 
-To build the image with the `--ulimit` option set to speed up build:
+To build the image with the `--ulimit` option set for speed:
+
+`cd ARDroneDocker`
 
 `docker build  --ulimit nofile=12800:25600 . -t ardrone2sdk`
-
-(wait ~5 minutes)
 
 To run the image:
 
 `docker run -it ardrone2sdk bash --login -i`
 
-To run the SDK example code, the built SDK example code can be found the following folder:
+The ready-built SDK example code can be found the following folder:
 
 `cd /root/ARDrone_SDK_2_0_1/Examples/Linux/Build/Release`
+
+Run any of:
 
 `./linux_sdk_demo`
 
@@ -40,15 +42,9 @@ To run the SDK example code, the built SDK example code can be found the followi
 
 `./sym_ardrone_testing_tool`
 
-You can the start writing your code and building as per the SDK instructions and examples.  Changes are saved to the `/files` folder by default.
+You can then start writing your code and building as per the SDK instructions and examples. Code is kept in the `/files` folder by default.
 
 ## Docker Options
-
-### ulimits
-
-To build the image with the `--ulimit` option set to speed up build in trusty:
-
-`docker build  --ulimit nofile=12800:25600 . -t ardrone2sdk:trusty`
 
 ### Save data from the container
 
@@ -56,15 +52,15 @@ To run the image with the local `files` folder synchronised with `/files` on the
 
 ``docker run -v `pwd`/files:/files -it ardrone2sdk bash --login -i``
 
-### Running graphical docker applications 
+### Running graphical docker applications (Linux)
 
-Several of the SDK demos create a video preview, you may have an error `cannot open display :0`. To run the image so graphical applications can be shown in the host:
+Some of the SDK demos create a video preview or have a ui, you may have an error `cannot open display :0`. To run the image so graphical applications are shown in the host:
 
 `docker run -e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -it ardrone2sdk bash --login -i`
 
 [via](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/) you may need to `xhost +` on a Linux host [see](http://stackoverflow.com/questions/28392949/running-chromium-inside-docker-gtk-cannot-open-display-0). 
 
-### Running graphical docker applications on a Mac
+### Running graphical docker applications (Mac)
 
 In OSX, you will need to install xQuartz, and socat (`brew install socat`), first run:
 
@@ -78,7 +74,7 @@ Then, in a different terminal:
 
 `xhost + $ip` (grants access to the XServer from the saved ip)
 
-`run -v `pwd`/files:/files -e DISPLAY=$ip:0 -it ardrone2sdk bash --login -i``
+`docker run -v `pwd`/files:/files -e DISPLAY=$ip:0 -it ardrone2sdk bash --login -i``
 
 These instructions need more testing and are based in on [this blog](http://kartoza.com/en/blog/how-to-run-a-linux-gui-application-on-osx-using-docker/) which seemed to work for me. Also [see](https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/).
 
@@ -111,6 +107,8 @@ Remove all volumes:
 Remove any dangling volumes:
 
 `docker volume rm $(docker volume ls -qf dangling=true)`
+
+### Linux Bridge Issue
 
 On Linux the Docker container may lose internet connectivity, with no `docker0` in the output of `ip route` on the host. This is especially true if you use VPNs or other tunnelling that modifies the default routes. To remove and re add the `docker0` bridge on linux:
 
