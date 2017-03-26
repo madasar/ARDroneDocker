@@ -1,6 +1,6 @@
 ## Synopsis
 
-Ubuntu-based docker container for the Parrot AR Drone SDK, for simple and automate compilation. The last update to the v2 SDK was in ~2013, targeting Ubuntu 12.04 i386. Parrot has released the v3 SDK for newer drones, without support the AR 1.0 or 2.0.
+Ubuntu-based docker container for the Parrot AR Drone SDK, for simple, automated compilation. The last update to the v2 SDK was in ~2013, targeting Ubuntu 12.04 i386. Parrot has released the v3 SDK for newer drones, without support the AR 1.0 or 2.0.
 
 ## Ubuntu Version
 
