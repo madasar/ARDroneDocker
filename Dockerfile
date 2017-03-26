@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 MAINTAINER Seyyed Shah <syd.shah@gmail.com>
 
 VOLUME /files
