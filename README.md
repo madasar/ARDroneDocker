@@ -8,7 +8,7 @@ The container is tested with Docker version 1.26 on Ubuntu 16.04. There are patc
 
 The SDK blob is in this repo (~65MB) [from here](http://developer.parrot.com/docs/SDK2/ARDrone_SDK_2_0_1.zip), for convenience and retains the original licence(s).
 
-The container downloads up to ~150MB, takes up 1GB of disk space, and automate the 5 minute build process.
+The container downloads up to ~150MB, takes up 1GB of disk space, and automates the 5 minute build process.
 
 ## Usage 
 
