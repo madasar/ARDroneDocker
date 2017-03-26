@@ -74,9 +74,9 @@ Then, in a different terminal:
 
 `xhost + $ip` (grants access to the XServer from the saved ip)
 
-`docker run -v `pwd`/files:/files -e DISPLAY=$ip:0 -it ardrone2sdk bash --login -i``
+``docker run -v `pwd`/files:/files -e DISPLAY=$ip:0 -it ardrone2sdk bash --login -i``
 
-These instructions need more testing and are based in on [this blog](http://kartoza.com/en/blog/how-to-run-a-linux-gui-application-on-osx-using-docker/) which seemed to work for me. Also [see](https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/).
+These instructions need more testing and are based on [this blog](http://kartoza.com/en/blog/how-to-run-a-linux-gui-application-on-osx-using-docker/) which worked for me. Also [see](https://fredrikaverpil.github.io/2016/07/31/docker-for-mac-and-gui-applications/).
 
 ### Networking
 
