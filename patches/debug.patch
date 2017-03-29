@@ -1,0 +1,12 @@
+diff -Naur /root/ARDrone_SDK_2_0_1-orig/ARDroneLib/Soft/Build/config.makefile /root/ARDrone_SDK_2_0_1/ARDroneLib/Soft/Build/config.makefile
+--- /root/ARDrone_SDK_2_0_1-orig/ARDroneLib/Soft/Build/config.makefile	2013-06-28 12:19:45.000000000 +0100
++++ /root/ARDrone_SDK_2_0_1/ARDroneLib/Soft/Build/config.makefile	2017-03-29 20:00:55.514509400 +0100
+@@ -3,7 +3,7 @@
+ # Common build definitions (CUSTOM)
+ #########################################################
+ 
+-RELEASE_BUILD        = yes
++RELEASE_BUILD        = no
+ QUIET_BUILD          = yes
+ VPSDK_PARALLEL_BUILD = no
+ 
