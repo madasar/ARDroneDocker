@@ -20,7 +20,6 @@ RUN echo "Europe/London" > /etc/timezone && \
    	cd /files/ && \ 
     	patch -p2  < /root/ardrone1404.patch && \
     	patch -p2  < /root/ardrone1604.patch && \
-    	patch -p2  < /root/OSXSegFault.patch && \
 	rm -rf /root/ARDrone_SDK_2_0_1.zip /files/__MACOSX /files/.DSStore && \
 	find . -name '.DS_Store' -type f -delete && \
 	rm -rf /var/lib/apt/lists/* && \
