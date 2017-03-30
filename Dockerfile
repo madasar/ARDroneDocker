@@ -1,7 +1,6 @@
 FROM ubuntu:xenial
 MAINTAINER Seyyed Shah <syd.shah@gmail.com>
 
-VOLUME /files
 
 ADD ARDrone_SDK_2_0_1.zip patches/ardrone1404.patch patches/ardrone1604.patch patches/OSXSegFault.patch /root/
 
@@ -15,8 +14,10 @@ RUN echo "Europe/London" > /etc/timezone && \
 	if [ ! `grep "precise" /etc/lsb-release` ]; then dpkg --add-architecture i386; fi  && \
 	apt-get -qq update && \
 	apt-get -qq install -y unzip patch libncurses5-dev libncursesw5-dev libgtk2.0-dev libxml2-dev libudev-dev libiw-dev libsdl1.2-dev lib32z1 build-essential daemontools net-tools nano gcc-multilib && \ 
-	export DEBIAN_FRONTEND=teletype && \
-	ls "/files/ARDrone_SDK_2_0_1" || unzip -d /files/ /root/ARDrone_SDK_2_0_1.zip && \
+	export DEBIAN_FRONTEND=teletype 
+
+
+RUN	ls "/files/ARDrone_SDK_2_0_1" || unzip -d /files/ /root/ARDrone_SDK_2_0_1.zip && \
    	cd /files/ && \ 
     	patch -p2  < /root/ardrone1404.patch && \
     	patch -p2  < /root/ardrone1604.patch && \
